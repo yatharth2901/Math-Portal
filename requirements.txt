@@ -1,3 +1,9 @@
-flask
-sympy
 python-dotenv
+flask 
+random
+sympy
+gspread  
+os
+oauth2client
+gspread_formatting 
+datetime 
