@@ -2,10 +2,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import random
 import sympy as sp
-import gspread
+import gspread , os
 from oauth2client.service_account import ServiceAccountCredentials
 from gspread_formatting import *
 from datetime import datetime
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -14,6 +15,8 @@ x = sp.symbols('x')
 def format_expr(expr):
     return str(expr).replace('**', '^').replace('*x', 'x').replace('*', '')
 
+creds_file = os.getenv("GOOGLE_CREDENTIALS_FILE")
+
 def init_google_sheets():
     scope = [
         "https://spreadsheets.google.com/feeds",
@@ -21,7 +24,8 @@ def init_google_sheets():
         "https://www.googleapis.com/auth/drive.file",
         "https://www.googleapis.com/auth/drive"
     ]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("innate-beacon-467310-d2-249244a99cda.json", scope)
+    
+    creds = ServiceAccountCredentials.from_json_keyfile_name(creds_file, scope)
     client = gspread.authorize(creds)
     sheet = client.open("Math Quiz Results").sheet1
 
@@ -34,7 +38,20 @@ def init_google_sheets():
 
     return sheet, client
 
-sheet, client = init_google_sheets()
+
+sheet = None
+client = None
+
+def get_sheet():
+    global sheet, client
+    if sheet is None or client is None:
+        try:
+            sheet, client = init_google_sheets()
+        except Exception as e:
+            print(f"Error initializing Google Sheets: {e}")
+            sheet = None
+            client = None
+    return sheet,client
 
 def get_student_color(name):
     colors = [
@@ -131,7 +148,7 @@ def submit_quiz():
     results = []
     start_time = session.get('start_time', '')
     submit_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
+    sheet=get_sheet()
     rows_to_append = []
 
     for i, q in enumerate(questions):
@@ -195,8 +212,10 @@ def submit_quiz():
 @app.route('/rankings')
 def rankings():
     headers = ["Name", "Class", "Section", "Question", "User Answer", "Correct Answer", "Status", "Timestamp", "Score"]
+    
+    sheet=get_sheet()
     records = sheet.get_all_records(expected_headers=headers)
-
+    
     students = []
     for r in records:
         try:
