@@ -1,6 +1,5 @@
 python-dotenv
 flask 
-random
 sympy
 gspread  
 os
