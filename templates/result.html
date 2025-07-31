@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a nicer look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <script>
+        // Configuration for TailwindCSS dark mode
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-900 text-white antialiased">
+
+    <div class="container mx-auto px-4 py-12 sm:py-24 flex flex-col items-center">
+
+        <!-- Main Results Card -->
+        <div class="w-full max-w-5xl bg-zinc-900 border border-zinc-800 rounded-2xl shadow-lg">
+            <!-- Header Section -->
+            <div class="p-6 sm:p-8 border-b border-zinc-800">
+                <h1 class="text-3xl sm:text-4xl font-bold mb-2 text-center">Quiz Result</h1>
+                <p class="text-center text-slate-400">
+                    Showing results for <span class="font-semibold text-cyan-400">{{ name }}</span>
+                    (Class: {{ student_class }}, Section: {{ section }})
+                </p>
+            </div>
+
+            <!-- Score and Rank Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-zinc-800">
+                <div class="p-8 text-center">
+                    <p class="text-lg text-slate-300 mb-2">Your Score</p>
+                    <p class="text-6xl font-extrabold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                        {{ score }}/{{ total }}
+                    </p>
+                </div>
+                <div class="p-8 text-center">
+                    <p class="text-lg text-slate-300 mb-2">Your Rank</p>
+                    <p class="text-6xl font-extrabold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+                        #{{ rank }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Review Table Section -->
+            <div class="p-6 sm:p-8 border-t border-zinc-800">
+                <h3 class="text-2xl font-bold mb-6">Review</h3>
+                <div class="overflow-x-auto rounded-lg border border-zinc-800">
+                    <table class="min-w-full text-sm text-left">
+                        <thead class="bg-zinc-800/50 text-xs text-slate-300 uppercase tracking-wider">
+                            <tr>
+                                <th scope="col" class="px-6 py-4">Question</th>
+                                <th scope="col" class="px-6 py-4">Your Answer</th>
+                                <th scope="col" class="px-6 py-4">Correct Answer</th>
+                                <th scope="col" class="px-6 py-4 text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-800">
+                            {% for result in results %}
+                            <tr class="hover:bg-zinc-800/40 transition-colors duration-200">
+                                <td class="px-6 py-4 font-medium text-slate-200">{{ result.question }}</td>
+                                <td class="px-6 py-4 text-slate-300">{{ result.your_answer }}</td>
+                                <td class="px-6 py-4 text-slate-300">{{ result.correct_answer }}</td>
+                                <td class="px-6 py-4 text-center">
+                                    {% if result.is_correct %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full font-semibold bg-green-500/10 text-green-400">
+                                            Correct
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full font-semibold bg-red-500/10 text-red-400">
+                                            Incorrect
+                                        </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div class="p-6 sm:p-8 border-t border-zinc-800 text-center">
+                <form action="{{ url_for('rankings') }}" class="inline-block">
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/50">
+                        View Leaderboard
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

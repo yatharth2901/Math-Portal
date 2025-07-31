@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a nicer look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for the animated gradient background */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes animate-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animated-gradient-background {
+            background-size: 400% 400%;
+            animation: animate-gradient 15s ease infinite;
+            background-image: radial-gradient(circle farthest-side at 0% 100%, #00ccb1, transparent),
+                              radial-gradient(circle farthest-side at 100% 0%, #7b61ff, transparent),
+                              radial-gradient(circle farthest-side at 100% 100%, #ffc414, transparent),
+                              radial-gradient(circle farthest-side at 0% 0%, #1ca0fb, transparent);
+        }
+    </style>
+    <script>
+        // Configuration for TailwindCSS dark mode
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-900 text-white antialiased">
+
+    <div class="container mx-auto px-4 py-12 sm:py-24">
+        <h1 class="text-4xl sm:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-blue-400 to-teal-300 bg-clip-text text-transparent">Math Portal</h1>
+        <p class="text-center text-slate-400 mb-12 max-w-2xl mx-auto">Use the tools below to start a quiz or solve complex mathematical equations instantly.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+            <!-- Card 1: Student Details Form -->
+            <div class="relative p-[3px] group">
+                <div class="absolute inset-0 rounded-2xl z-0 opacity-60 group-hover:opacity-100 blur-xl transition duration-500 animated-gradient-background"></div>
+                <div class="relative z-10 rounded-2xl bg-zinc-900 p-6 sm:p-8 h-full flex flex-col">
+                    <h2 class="text-2xl font-bold text-white mb-6">Start Quiz</h2>
+                    <form action="/start_quiz" method="post" class="flex flex-col flex-grow">
+                        <div class="space-y-5 flex-grow">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-slate-300 mb-2">Name</label>
+                                <input type="text" id="name" name="name" required class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition duration-200" placeholder="e.g., Jane Doe">
+                            </div>
+                            <div>
+                                <label for="class" class="block text-sm font-medium text-slate-300 mb-2">Class</label>
+                                <input type="text" id="class" name="class" required class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition duration-200" placeholder="e.g., 10th Grade">
+                            </div>
+                            <div>
+                                <label for="section" class="block text-sm font-medium text-slate-300 mb-2">Section</label>
+                                <input type="text" id="section" name="section" required class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition duration-200" placeholder="e.g., Section B">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 mt-5">
+                            Start Quiz
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Card 2: Equation Solver Form -->
+            <div class="relative p-[3px] group">
+                <div class="absolute inset-0 rounded-2xl z-0 opacity-60 group-hover:opacity-100 blur-xl transition duration-500 animated-gradient-background"></div>
+                <div class="relative z-10 rounded-2xl bg-zinc-900 p-6 sm:p-8 h-full flex flex-col">
+                    <h2 class="text-2xl font-bold text-white mb-6">Equation Solver</h2>
+                    <form action="/solve_equation" method="post" class="flex flex-col flex-grow">
+                        <div class="space-y-5 flex-grow">
+                            <div>
+                                <label for="equation_type" class="block text-sm font-medium text-slate-300 mb-2">Equation Type</label>
+                                <select id="equation_type" name="equation_type" required class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200">
+                                    <option value="linear">Linear (ax + b = c)</option>
+                                    <option value="quadratic">Quadratic (ax² + bx + c = 0)</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label for="a" class="block text-sm font-medium text-slate-300 mb-2">Value a</label>
+                                    <input type="number" id="a" name="a" required class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200" placeholder="a">
+                                </div>
+                                <div>
+                                    <label for="b" class="block text-sm font-medium text-slate-300 mb-2">Value b</label>
+                                    <input type="number" id="b" name="b" required class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200" placeholder="b">
+                                </div>
+                                <div>
+                                    <label for="c" class="block text-sm font-medium text-slate-300 mb-2">Value c</label>
+                                    <input type="number" id="c" name="c" required class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200" placeholder="c">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 mt-5">
+                            Solve Equation
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
