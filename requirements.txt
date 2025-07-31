@@ -2,7 +2,5 @@ python-dotenv
 flask 
 sympy
 gspread  
-os
 oauth2client
-gspread_formatting 
-datetime 
+gspread_formatting
