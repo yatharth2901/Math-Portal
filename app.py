@@ -51,7 +51,7 @@ def get_sheet():
             print(f"Error initializing Google Sheets: {e}")
             sheet = None
             client = None
-    return sheet,client
+    return sheet
 
 def get_student_color(name):
     colors = [
