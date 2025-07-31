@@ -36,7 +36,7 @@ def init_google_sheets():
             sheet.delete_row(1)
         sheet.insert_row(headers, 1)
 
-    return sheet, client
+    return sheet
 
 
 sheet = None
